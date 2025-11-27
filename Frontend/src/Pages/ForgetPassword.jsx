@@ -40,8 +40,8 @@ const ForgetPassword = () => {
       <div className="w-full max-w-lg bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl border border-teal-100 p-8 md:p-10 transform transition-all duration-300 hover:shadow-3xl">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
-            <FontAwesomeIcon icon={faEnvelope} className="text-2xl text-blue-600" />
+          <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 rounded-full flex items-center justify-center text-white shadow-lg mx-auto mb-4">
+            <FontAwesomeIcon icon={faEnvelope} className="text-2xl text-white" />
           </div>
           <h2 className="text-3xl font-bold text-gray-800 mb-2">Forgot Password</h2>
           <p className="text-gray-600">Enter your email to receive a reset link</p>
@@ -79,7 +79,7 @@ const ForgetPassword = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold text-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white py-3 rounded-xl font-semibold text-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
             disabled={loading}
           >
             {loading ? (

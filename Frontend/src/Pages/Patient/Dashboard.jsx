@@ -363,7 +363,16 @@ useEffect(() => {
                       <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">{service.title}</h3>
                       <p className="text-gray-600 leading-relaxed mb-4 sm:mb-6 text-sm sm:text-base">{service.desc}</p>
                       <button
-                        onClick={() => checkAccess(() => navigate("/services"))}
+                        onClick={() => {
+                          if (service.title === "AI Disease Prediction") {
+                            window.open('https://multiple-diseases-prediction-app.streamlit.app/', '_blank', 'noopener,noreferrer');
+                          } else if (service.title === "Specialist Referrals") {
+                            checkAccess(() => navigate("/doctors"));
+                          } else {
+                            // Fallback for any other services if they exist or are added in the future
+                            checkAccess(() => navigate("/services"));
+                          }
+                        }}
                         className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg text-sm sm:text-base w-full sm:w-auto justify-center sm:justify-start"
                       >
                         Learn More
