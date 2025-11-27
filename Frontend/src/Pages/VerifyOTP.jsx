@@ -11,6 +11,7 @@ const VerifyOTP = () => {
 
   const storedEmail = localStorage.getItem("pendingEmail");
   const email = location.state?.email || storedEmail || "";
+  const pendingDoctorSignup = localStorage.getItem("pendingDoctorSignup");
 
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const [loading, setLoading] = useState(false);
@@ -58,16 +59,77 @@ const VerifyOTP = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:8000/api/auth/verify-otp", { email, otp: otp.join('') });
+      let res;
+      if (pendingDoctorSignup) {
+        // Debug: Log raw localStorage value
+        console.log("📦 Raw pendingDoctorSignup from localStorage:", pendingDoctorSignup);
+        
+        let signupData;
+        try {
+          signupData = JSON.parse(pendingDoctorSignup);
+        } catch (parseError) {
+          console.error("❌ Failed to parse pendingDoctorSignup:", parseError);
+          toast.error("Invalid signup data. Please sign up again.");
+          localStorage.removeItem("pendingDoctorSignup");
+          localStorage.removeItem("pendingEmail");
+          navigate("/doctor-signup");
+          return;
+        }
+        
+        // Debug: Log the parsed signup data
+        console.log("📤 Parsed pendingDoctorSignup:", signupData);
+        console.log("📤 All keys in signupData:", Object.keys(signupData));
+        console.log("📤 licenseNumber value:", signupData.licenseNumber);
+        console.log("📤 licenseNumber type:", typeof signupData.licenseNumber);
+        
+        // Validate all required fields before sending
+        const missingFields = [];
+        if (!signupData.username) missingFields.push("username");
+        if (!signupData.password) missingFields.push("password");
+        if (!signupData.licenseNumber) missingFields.push("licenseNumber");
+        
+        if (missingFields.length > 0) {
+          console.error("❌ Missing required fields:", missingFields);
+          toast.error(`Missing required fields: ${missingFields.join(", ")}. Please sign up again.`);
+          localStorage.removeItem("pendingDoctorSignup");
+          localStorage.removeItem("pendingEmail");
+          navigate("/doctor-signup");
+          return;
+        }
+        
+        const requestData = {
+          email: email.trim().toLowerCase(),
+          otp: otp.join(''),
+          username: signupData.username,
+          password: signupData.password,
+          specialization: signupData.specialization || "general",
+          licenseNumber: signupData.licenseNumber
+        };
+        
+        console.log("📤 Sending OTP verification request:", {
+          ...requestData,
+          password: '[REDACTED]'
+        });
+        
+        res = await axios.post("http://localhost:8000/api/doctors/verify-otp", requestData);
+        localStorage.removeItem("pendingDoctorSignup");
+      } else {
+        res = await axios.post("http://localhost:8000/api/auth/verify-otp", { email, otp: otp.join('') });
+        localStorage.removeItem("pendingSignup");
+      }
 
       if (res.data?.token) {
-        localStorage.removeItem("pendingSignup");
         localStorage.removeItem("pendingEmail");
         localStorage.setItem("token", res.data.token);
-        setUser(res.data.user);
+        setUser(res.data.user || res.data.doctor);
 
         toast.success("OTP Verified! Account created.");
-        navigate("/dashboard");
+        // Navigate based on user role
+        if ((res.data.user?.role === "doctor") || res.data.doctor) {
+          navigate("/docDashboard");
+        } else {
+          navigate("/dashboard");
+        }
       } else {
         toast.error(res?.data?.msg || "OTP verification failed.");
       }

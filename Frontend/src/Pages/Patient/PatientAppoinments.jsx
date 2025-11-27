@@ -312,9 +312,7 @@ const PatientAppointments = () => {
                           style={appt.paymentStatus === "paid" ? { backgroundColor: "#00d37d" } : {}}>
                             {appt.paymentStatus === "paid" ? "Confirmed" : "Payment Pending"}
                           </div>
-                          <div className="text-xs text-gray-400 mt-1">
-                            #{appt._id?.slice(-6)}
-                          </div>
+                          
                         </div>
                       </div>
                     </div>

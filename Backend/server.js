@@ -10,7 +10,6 @@ const path = require("path");
 // Routes
 const authRoutes = require("./Routes/authPatient");
 const patientProfileRoutes = require("./Routes/patientProfileRoutes");
-const patientRoutes = require("./Routes/patientRoutes");
 const testimonialRoutes = require("./Routes/testimonialRoutes");
 const doctorRoutes = require("./Routes/doctorRoutes");
 const doctorProfileRoutes = require("./Routes/docProfileRoutes");
@@ -86,7 +85,6 @@ app.get("/api/health", (req, res) => {
 // Register API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/patient-profile", patientProfileRoutes);
-app.use("/api/patient", patientRoutes);
 app.use("/api/testimonials", testimonialRoutes);
 app.use("/api/doctors", doctorRoutes);
 app.use("/api/doctor-profile", doctorProfileRoutes);
@@ -99,36 +97,6 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/calls", callRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/prescriptions", prescriptionRoutes);
-
-// Global error handling middleware
-app.use((error, req, res, next) => {
-  console.error('Global error handler:', error);
-
-  // Handle multer errors
-  if (error.code === 'LIMIT_FILE_SIZE') {
-    return res.status(400).json({ msg: 'File too large' });
-  }
-
-  if (error.code === 'LIMIT_UNEXPECTED_FILE') {
-    return res.status(400).json({ msg: 'Unexpected file field' });
-  }
-
-  // Handle other errors
-  if (error.name === 'ValidationError') {
-    return res.status(400).json({ msg: error.message });
-  }
-
-  res.status(500).json({ msg: 'Internal server error' });
-});
-
-// Ensure uploads directory exists
-const ensureUploadsDir = () => {
-  const uploadsDir = path.join(__dirname, 'uploads');
-  if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir, { recursive: true });
-    console.log('[Server] Created uploads directory');
-  }
-};
 
 // Cleanup function for uploaded files
 const cleanupUploads = () => {
@@ -170,8 +138,6 @@ const startServer = async () => {
   }
   try {
     console.log(`[Server] Starting server initialization...`);
-    // Ensure uploads directory exists
-    ensureUploadsDir();
     // Clean up any existing uploaded files
     cleanupUploads();
     await connectDB();

@@ -7,16 +7,12 @@ import Spinner from "./Components/spinner.jsx";
 
 // Pages & Components
 import Dashboard from "./Pages/Patient/Dashboard";
-import Signup from "./Pages/Patient/Signup";
-import Login from "./Pages/Patient/Login";
+import AuthPage from "./Pages/AuthPage";
 import VerifyOTP from "./Pages/VerifyOTP";
-import DocVerify from "./Pages/Doctor/DocVerify";
 import ContactUs from "./Components/ContactUs";
 import FAQs from "./Components/FQAs";
 import About from "./Components/About";
 import Testimonials from "./Components/Testimonials";
-import DoctorSignup from "./Pages/Doctor/DoctorSignup";
-import DoctorLogin from "./Pages/Doctor/DoctorLogin";
 import DocDashboard from "./Pages/Doctor/DocDashboard";
 import DoctorPanel from "./Pages/Doctor/DoctorPanel";
 import Appointments from "./Pages/Doctor/Appointments";
@@ -44,12 +40,7 @@ const App = () => {
 
   // Only these routes show the spinner (authentication and critical routes)
   const spinnerRoutes = [
-    "/verify-otp",
-    "/docverify-otp",
-    "/docDashboard",
-    "/docDashboard/appointments",
-    "/docDashboard/profile",
-    "/docDashboard/messages",
+   
   ];
 
   const hideNavbarPaths = [
@@ -58,15 +49,11 @@ const App = () => {
     "/docDashboard/profile",
     "/docDashboard/messages",
     "/docDashboard/upload-blog",
-    "/signup",
-    "/login",
+    "/auth",
     "/forgot-password",
     "/change-password",
-    "/doctor-signup",
-    "/doctor-login",
 
     "/patient-chat",
-    "/docverify-otp",
     "/verify-otp",
   ];
 
@@ -103,7 +90,7 @@ const App = () => {
           <Route path="/" element={<Navigate to="/dashboard" />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/verify-otp" element={<VerifyOTP />} />
-          <Route path="/docverify-otp" element={<DocVerify />} />
+          <Route path="/docverify-otp" element={<VerifyOTP />} />
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/faqs" element={<FAQs />} />
           <Route path="/about" element={<About />} />
@@ -114,8 +101,7 @@ const App = () => {
           <Route path="/my-prescriptions" element={<MyPrescriptions />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/messages/:docid" element={<Messages />} /> {/* Add dynamic route */}
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/auth" element={<AuthPage />} />
           <Route path="/forgot-password" element={<ForgetPassword />} />
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/all-blogs" element={<AllBlogs />} />
@@ -123,9 +109,11 @@ const App = () => {
           <Route path="/terms-of-service" element={<TermsAndServices />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
-          {/* Doctor Routes */}
-          <Route path="/doctor-signup" element={<DoctorSignup />} />
-          <Route path="/doctor-login" element={<DoctorLogin />} />
+          {/* Redirect old routes to /auth */}
+          <Route path="/signup" element={<AuthPage />} />
+          <Route path="/login" element={<AuthPage />} />
+          <Route path="/doctor-signup" element={<AuthPage />} />
+          <Route path="/doctor-login" element={<AuthPage />} />
           <Route path="/docDashboard" element={<DocDashboard />}>
             <Route index element={<DoctorPanel />} />
             <Route path="appointments" element={<Appointments />} />

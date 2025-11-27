@@ -135,7 +135,7 @@ export const AppProvider = ({ children }) => {
         console.log("🔍 Patient Login - Setting user context with:", res.data.user);
         setUser(res.data.user);
         setLoading(false);
-        return true;
+        return res.data.user;
       } else {
         throw new Error("Invalid token format received from server");
       }

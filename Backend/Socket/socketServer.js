@@ -11,17 +11,19 @@ const setupSocket = (server) => {
   io = new Server(server, {
     cors: {
       origin: function (origin, callback) {
-        const allowedOrigins = [
-  "http://localhost:5173",
-  "http://localhost:5174",
-  "https://medipredict-frontend.netlify.app",
-  "https://medi-predict-frontend.vercel.app",
-  "https://medipredict-backend.onrender.com"
-]
+        const allowedOrigins = (process.env.CORS_ALLOWED_ORIGINS || "").split(",").map(o => o.trim()).filter(o => o);
+        const defaultOrigins = [
+          "http://localhost:5173",
+          "http://localhost:5174",
+          "https://medipredict-frontend.netlify.app",
+          "https://medi-predict-frontend.vercel.app",
+          "https://medipredict-backend.onrender.com"
+        ];
+        const allAllowedOrigins = [...new Set([...allowedOrigins, ...defaultOrigins])];
 
         // allow requests with no origin like mobile apps or curl
         if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) !== -1) {
+        if (allAllowedOrigins.indexOf(origin) !== -1) {
           callback(null, true);
         } else {
           callback(new Error("Not allowed by CORS"));
@@ -160,8 +162,6 @@ const setupSocket = (server) => {
       if (targetSocketId) {
         io.to(targetSocketId).emit("ice-candidate", { candidate });
         console.log(`🧊 [Socket] ICE candidate sent to ${toUserId}`);
-      } else {
-        console.error(`❌ [Socket] No socket found for toUserId: ${toUserId}`);
       }
     });
 

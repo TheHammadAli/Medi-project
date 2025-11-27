@@ -14,7 +14,7 @@ const generateOTP = () =>
 // 📌 Register (send OTP)
 const register = async (req, res) => {
   try {
-    let { username, email, password, role } = req.body;
+    let { username, email, password, role, licenseNumber } = req.body;
 
     if (!username || !email || !password || !role) {
       return res.status(400).json({ msg: "All fields are required" });
@@ -38,6 +38,10 @@ const register = async (req, res) => {
       password: hashedPassword,
       role,
     };
+
+    if (role === "doctor") {
+      tempUser.licenseNumber = licenseNumber;
+    }
 
     // ✅ Ensure only one OTP per email
     await OTP.deleteMany({ email });
@@ -102,7 +106,7 @@ const verifyOTP = async (req, res) => {
         .json({ msg: "Temp user data missing in OTP record." });
     }
 
-    const { username, password, role } = otpRecord.tempUser;
+    const { username, password, role, licenseNumber } = otpRecord.tempUser;
 
     // Create user based on role
     let newUser;
@@ -111,6 +115,7 @@ const verifyOTP = async (req, res) => {
         username,
         email,
         password,
+        licenseNumber,
         role: role || "doctor",
         isVerified: true,
       });
@@ -262,9 +267,9 @@ const login = async (req, res) => {
       }
     }
 
-    // If user is a doctor, include specialization
+    // If user is a doctor, include licenseNumber
     if (userType === "doctor") {
-      userResponse.specialization = user.specialization;
+      userResponse.licenseNumber = user.licenseNumber;
     }
 
     const response = {

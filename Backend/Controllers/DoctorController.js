@@ -41,6 +41,38 @@ const registerDoctor = async (req, res) => {
 
 const DoctorVerifyOTP = async (req, res) => {
   let { email, otp, username, password, specialization, licenseNumber } = req.body;
+  
+  // Debug: Log all received data
+  console.log(`📥 Received OTP verification request:`, {
+    email,
+    otp,
+    username,
+    password: password ? '[REDACTED]' : undefined,
+    specialization,
+    licenseNumber
+  });
+
+  // Validate required fields before proceeding
+  if (!email || !otp) {
+    return res.status(400).json({ msg: "Email and OTP are required." });
+  }
+
+  if (!username || !password || !licenseNumber) {
+    console.log(`❌ Missing required fields:`, {
+      username: !!username,
+      password: !!password,
+      licenseNumber: !!licenseNumber
+    });
+    return res.status(400).json({
+      msg: "Missing required fields for doctor registration.",
+      missing: {
+        username: !username,
+        password: !password,
+        licenseNumber: !licenseNumber
+      }
+    });
+  }
+
   email = email.trim().toLowerCase();
 
   try {
@@ -86,7 +118,9 @@ const DoctorVerifyOTP = async (req, res) => {
       email,
       password,
       specialization,
+      licenseNumber,
       isVerified: true,
+      role: "doctor",
     });
 
     await DocProfile.create({

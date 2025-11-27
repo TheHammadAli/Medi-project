@@ -166,7 +166,7 @@ const Navbar = () => {
           onClick={() => setIsOpen(false)}
           className={`${
             mobile ? "block w-full text-center" : ""
-          } bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition`}
+          } bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 text-white px-4 py-2 rounded-md  transition`}
         >
           Sign Up
         </Link>
