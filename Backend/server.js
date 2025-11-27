@@ -10,6 +10,7 @@ const path = require("path");
 // Routes
 const authRoutes = require("./Routes/authPatient");
 const patientProfileRoutes = require("./Routes/patientProfileRoutes");
+const patientRoutes = require("./Routes/patientRoutes");
 const testimonialRoutes = require("./Routes/testimonialRoutes");
 const doctorRoutes = require("./Routes/doctorRoutes");
 const doctorProfileRoutes = require("./Routes/docProfileRoutes");
@@ -85,6 +86,7 @@ app.get("/api/health", (req, res) => {
 // Register API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/patient-profile", patientProfileRoutes);
+app.use("/api/patient", patientRoutes);
 app.use("/api/testimonials", testimonialRoutes);
 app.use("/api/doctors", doctorRoutes);
 app.use("/api/doctor-profile", doctorProfileRoutes);
