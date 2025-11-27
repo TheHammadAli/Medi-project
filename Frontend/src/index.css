@@ -34,27 +34,70 @@
   }
 }
 
-/* 🔵 Success Toast - blue background */
-[data-sonner-toast][data-sonner-type="success"] {
-  background-color: #3b82f6 !important; /* Tailwind blue-500 */
-  color: white !important;
-}
-
-/* 🔴 Error Toast - red background */
-[data-sonner-toast][data-sonner-type="error"] {
-  background-color: #ef4444 !important; /* Tailwind red-500 */
-  color: white !important;
-}
-
-/* Optional: consistent button color */
-[data-sonner-toast] button {
-  color: white !important;
-}
-
-/* Smooth animation */
+/* 🔵 Success Toast - Attractive gradient */
+/* --- Global Modern Toast Styling --- */
 [data-sonner-toast] {
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
+  /* Softer, more rounded corners */
+  border-radius: 12px !important;
+  /* Slightly larger text for better readability */
+  font-size: 0.95rem !important;
+  /* Keep the elegant frosted glass effect */
+  backdrop-filter: blur(12px) !important;
+  /* More balanced internal padding */
+  padding: 1.1rem 1.5rem !important;
+  font-weight: 500 !important;
+  /* Default border for definition */
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  /* Ensure a smooth transition for all properties */
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+
+/* ✅ Success Toast - Premium Purple-Blue */
+[data-sonner-toast][data-sonner-type="success"] {
+  /* Deeper, more refined gradient */
+  background: linear-gradient(135deg, #4c52f7 0%, #a24ba2 100%) !important;
+  color: white !important;
+  /* Larger, softer, and more diffused shadow for "lift" */
+  box-shadow: 0 15px 30px rgba(76, 82, 247, 0.4) !important;
+}
+
+/* 🔴 Error Toast - Sophisticated Red-Pink */
+[data-sonner-toast][data-sonner-type="error"] {
+  /* Richer, darker error gradient */
+  background: linear-gradient(135deg, #f5576c 0%, #da2c43 100%) !important;
+  color: white !important;
+  /* Error-based diffused shadow */
+  box-shadow: 0 15px 30px rgba(245, 87, 108, 0.4) !important;
+}
+
+/* 💡 Info/Default Toast - Modern Neutral (Optional) */
+[data-sonner-toast]:not([data-sonner-type="success"]):not([data-sonner-type="error"]) {
+  /* A dark, transparent background for neutral toasts */
+  background-color: rgba(30, 30, 30, 0.9) !important;
+  color: #e0e0e0 !important;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3) !important;
+}
+
+
+/* --- Enhanced Action Button Styling --- */
+[data-sonner-toast] button {
+  color: #333 !important; /* Darker text for contrast */
+  /* Solid white background for the button to 'pop' */
+  background: white !important;
+  border: none !important; /* Remove any default border */
+  border-radius: 8px !important;
+  padding: 0.4rem 1rem !important; /* Slightly more prominent padding */
+  font-weight: 600 !important; /* Bolder text */
+  transition: all 0.2s ease-in-out !important;
+}
+
+[data-sonner-toast] button:hover {
+  /* Subtle color change on hover */
+  background: #f0f0f0 !important;
+  /* More pronounced "press down" effect */
+  transform: translateY(0px) !important;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
 @keyframes toast-slide-down {
